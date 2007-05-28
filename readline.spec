@@ -40,6 +40,15 @@ Provides:	%{name} = %{version}-%{release}
 This package contains the library needed to run programs dynamically
 linked to readline.
 
+%package -n	%{lib_name}-doc
+Summary:	Readline documentation in GNU info format
+Group:		Books/Computer books
+Provides:	%{name}-doc = %{version}-%{release}
+Requires:	%{lib_name} = %{version}
+
+%description -n	%{lib_name}-doc
+This package contains readline documentation in the GNU info format.
+
 %package -n	%{lib_name}-devel
 Summary:	Files for developing programs that use the readline library
 Group:		Development/C
@@ -95,11 +104,11 @@ rm -rf $RPM_BUILD_ROOT
 %post -n %{lib_name} -p /sbin/ldconfig
 %postun -n %{lib_name} -p /sbin/ldconfig
 
-%post -n %{lib_name}-devel
+%post -n %{lib_name}-doc
 %{_install_info history.info}
 %{_install_info readline.info}
 
-%preun -n %{lib_name}-devel
+%preun -n %{lib_name}-doc
 %{_remove_install_info history.info}
 %{_remove_install_info readline.info}
 
@@ -107,12 +116,14 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root)
 /%{_lib}/lib*.so.*
 
+%files -n %{lib_name}-doc
+%{_infodir}/*info*
+
 %files -n %{lib_name}-devel
 %defattr(-,root,root)
 %doc CHANGELOG CHANGES INSTALL MANIFEST README USAGE
 %doc doc examples support
-%{_mandir}/man*/*
-%{_infodir}/*info*
+%{_mandir}/man3/*
 %{_includedir}/readline
 %{_libdir}/lib*.a
 %{_libdir}/lib*.so
