@@ -1,7 +1,7 @@
 ## Do not apply library policy!!
 %define	name	readline
 %define	version	5.2
-%define	release	%mkrel 2
+%define	release	%mkrel 3
 
 %define lib_major	5
 %define lib_name_orig	lib%{name}
@@ -16,7 +16,6 @@ Group:		System/Libraries
 Url:		http://cnswww.cns.cwru.edu/php/chet/readline/rltop.html
 Source0:	ftp://ftp.gnu.org/pub/gnu/readline/%{name}-%{version}.tar.bz2
 Patch3:		readline-4.1-outdated.patch
-Patch5:		readline-4.1-resize.patch
 #Patch11:	ftp://ftp.cwru.edu/pub/bash/readline-5.1-patches/readline51-001
 Patch12:	readline52-001
 Patch16:	readline-4.3-no_rpath.patch
@@ -67,7 +66,6 @@ text of the line remains.
 %prep
 %setup -q
 %patch3 -p1 -b .outdated
-%patch5 -p1 -b .resize
 libtoolize --copy --force
 %patch12 -p0 -b .001
 %patch16 -p1 -b .no_rpath
