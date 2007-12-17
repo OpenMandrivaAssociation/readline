@@ -21,7 +21,6 @@ Patch12:	readline52-001
 Patch16:	readline-4.3-no_rpath.patch
 #Patch18:	readline-wrap.patch
  
-Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
 The "readline" library will read a line from the terminal and return it,
