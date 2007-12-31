@@ -1,26 +1,37 @@
 ## Do not apply library policy!!
 %define	name	readline
 %define	version	5.2
-%define	release	%mkrel 6
+%define	release	%mkrel 7
 
-%define lib_major	5
-%define lib_name_orig	lib%{name}
-%define lib_name	%mklibname %{name} %{lib_major}
+%define major 5
+%define lib_name_orig lib%{name}
+%define lib_name %mklibname %{name} %{major}
 
 Summary:	Library for reading lines from a terminal
 Name:		%{name}
 Version:	%{version}
 Release:	%{release}
-License:	GPL
+License:	GPLv2+
 Group:		System/Libraries
-Url:		http://cnswww.cns.cwru.edu/php/chet/readline/rltop.html
-Source0:	ftp://ftp.gnu.org/pub/gnu/readline/%{name}-%{version}.tar.bz2
+Url:		http://tiswww.case.edu/php/chet/readline/rltop.html
+Source0:	ftp://ftp.gnu.org/gnu/readline/%{name}-%{version}.tar.gz
+Source1:	%{SOURCE0}.sig
+Patch0:		readline-4.3-no_rpath.patch
+Patch1:		readline-5.2-inv.patch
 Patch3:		readline-4.1-outdated.patch
-#Patch11:	ftp://ftp.cwru.edu/pub/bash/readline-5.1-patches/readline51-001
-Patch12:	readline52-001
-Patch16:	readline-4.3-no_rpath.patch
-#Patch18:	readline-wrap.patch
- 
+# (tpg) upstream patches
+Patch10:	readline52-001.patch
+Patch11:	readline52-002.patch
+Patch12:	readline52-003.patch
+Patch13:	readline52-004.patch
+Patch14:	readline52-005.patch
+Patch15:	readline52-006.patch
+Patch16:	readline52-007.patch
+Patch17:	readline52-008.patch
+Patch18:	readline52-009.patch
+Patch19:	readline52-010.patch
+Patch20:	readline52-011.patch
+BuildRequires:	libncurses-devel 
 
 %description
 The "readline" library will read a line from the terminal and return it,
@@ -42,7 +53,7 @@ linked to readline.
 Summary:	Readline documentation in GNU info format
 Group:		Books/Computer books
 Provides:	%{name}-doc = %{version}-%{release}
-Requires:	%{lib_name} = %{version}
+Requires:	%{lib_name} = %{version}-%{release}
 
 %description -n	%{lib_name}-doc
 This package contains readline documentation in the GNU info format.
@@ -64,39 +75,49 @@ text of the line remains.
 
 %prep
 %setup -q
+%patch0 -p1 -b .no_rpath
+%patch1 -p1 -b .inv
 %patch3 -p1 -b .outdated
 libtoolize --copy --force
-%patch12 -p0 -b .001
-%patch16 -p1 -b .no_rpath
-#%patch18 -p1 -b .wrap
+%patch10 -p0 -b .001
+%patch11 -p0 -b .002
+%patch12 -p0 -b .003
+%patch13 -p0 -b .004
+%patch14 -p0 -b .005
+%patch15 -p0 -b .006
+%patch16 -p0 -b .007
+%patch17 -p0 -b .008
+%patch18 -p0 -b .009
+%patch19 -p0 -b .010
+%patch20 -p0 -b .011
 
 %build
-export CFLAGS="$RPM_OPT_FLAGS"
-%configure2_5x --with-curses=ncurses
+export CPPFLAGS="-I%{_includedir}/ncurses"
+
+%configure2_5x \
+	--with-curses
+
 perl -p -i -e 's|-Wl,-rpath.*||' shlib/Makefile
-%make static shared
+
+%make
 
 %install
-rm -rf $RPM_BUILD_ROOT
-%{makeinstall} install-shared
+rm -rf %{buildroot}
+%makeinstall_std
+
 # put all libs in /lib because some package needs it
 # before /usr is mounted
-install -d $RPM_BUILD_ROOT/%{_lib}
-mv $RPM_BUILD_ROOT%{_libdir}/*.so* $RPM_BUILD_ROOT/%{_lib}
-ln -s ../../%{_lib}/lib{history,readline}.so $RPM_BUILD_ROOT%{_libdir}
-for i in history readline; do
-   ln -s ../%{_lib}/lib$i.so.4 $RPM_BUILD_ROOT/%{_lib}/lib$i.so.4.1
-   ln -s ../%{_lib}/lib$i.so.4 $RPM_BUILD_ROOT/%{_lib}/lib$i.so.4.2
-done
-
+install -d %{buildroot}/%{_lib}
+mv %{buildroot}%{_libdir}/*.so* %{buildroot}/%{_lib}
+ln -s ../../%{_lib}/lib{history,readline}.so %{buildroot}%{_libdir}
 
 # The make install moves the existing libs with a suffix of old. Urgh.
-rm -f $RPM_BUILD_ROOT/%{_lib}/*.old
+rm -f %{buildroot}/%{_lib}/*.old
 
 perl -p -i -e 's|/usr/local/bin/perl|/usr/bin/perl|' doc/texi2html
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %post -n %{lib_name} -p /sbin/ldconfig
 %postun -n %{lib_name} -p /sbin/ldconfig
@@ -111,19 +132,17 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n %{lib_name}
 %defattr(-,root,root)
-/%{_lib}/lib*.so.*
+/%{_lib}/lib*.so.%{major}*
 
 %files -n %{lib_name}-doc
 %{_infodir}/*info*
 
 %files -n %{lib_name}-devel
 %defattr(-,root,root)
-%doc CHANGELOG CHANGES INSTALL MANIFEST README USAGE
+%doc CHANGELOG CHANGES MANIFEST README USAGE
 %doc doc examples support
 %{_mandir}/man3/*
 %{_includedir}/readline
 %{_libdir}/lib*.a
 %{_libdir}/lib*.so
 /%{_lib}/*so
-
-
