@@ -13,6 +13,7 @@ Version:	%{version}
 Release:	%{release}
 License:	GPLv2+
 Group:		System/Libraries
+BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 Url:		http://tiswww.case.edu/php/chet/readline/rltop.html
 Source0:	ftp://ftp.gnu.org/gnu/readline/%{name}-%{version}.tar.gz
 Source1:	%{SOURCE0}.sig
