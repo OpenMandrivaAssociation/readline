@@ -13,7 +13,6 @@ Version:	%{version}
 Release:	%{release}
 License:	GPLv2+
 Group:		System/Libraries
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 Url:		http://tiswww.case.edu/php/chet/readline/rltop.html
 Source0:	ftp://ftp.gnu.org/gnu/readline/%{name}-%{version}.tar.gz
 Source1:	%{SOURCE0}.sig
@@ -33,6 +32,7 @@ Patch18:	readline52-009.patch
 Patch19:	readline52-010.patch
 Patch20:	readline52-011.patch
 BuildRequires:	libncurses-devel 
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
 The "readline" library will read a line from the terminal and return it,
@@ -66,6 +66,7 @@ Requires:	%{lib_name} = %{version}-%{release}
 Obsoletes:	%{name}-devel
 Provides:	%{lib_name_orig}-devel = %{version}-%{release}
 Provides:	%{name}-devel = %{version}-%{release}
+Requires:	libncurses-devel 
 
 %description -n	%{lib_name}-devel
 The "readline" library will read a line from the terminal and return it,
@@ -94,9 +95,11 @@ libtoolize --copy --force
 
 %build
 export CPPFLAGS="-I%{_includedir}/ncurses"
+export CFLAGS="%{optflags} -I%{_includedir}/ncurses"
+export CXXFLAGS="%{optflags} -I%{_includedir}/ncurses"
 
 %configure2_5x \
-	--with-curses
+	 --with-curses
 
 perl -p -i -e 's|-Wl,-rpath.*||' shlib/Makefile
 
