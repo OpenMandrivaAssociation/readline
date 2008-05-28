@@ -1,7 +1,7 @@
 ## Do not apply library policy!!
 %define	name	readline
 %define	version	5.2
-%define	release	%mkrel 7
+%define	release	%mkrel 8
 
 %define major 5
 %define lib_name_orig lib%{name}
@@ -19,6 +19,8 @@ Source1:	%{SOURCE0}.sig
 Patch0:		readline-4.3-no_rpath.patch
 Patch1:		readline-5.2-inv.patch
 Patch3:		readline-4.1-outdated.patch
+Patch4:		rl-header.patch
+Patch5:		rl-attribute.patch
 # (tpg) upstream patches
 Patch10:	readline52-001.patch
 Patch11:	readline52-002.patch
@@ -80,6 +82,8 @@ text of the line remains.
 %patch0 -p1 -b .no_rpath
 %patch1 -p1 -b .inv
 %patch3 -p1 -b .outdated
+%patch4 -p1 -b .header
+%patch5 -p1 -b .attribute
 libtoolize --copy --force
 %patch10 -p0 -b .001
 %patch11 -p0 -b .002
@@ -94,9 +98,9 @@ libtoolize --copy --force
 %patch20 -p0 -b .011
 
 %build
-export CPPFLAGS="-I%{_includedir}/ncurses"
-export CFLAGS="%{optflags} -I%{_includedir}/ncurses"
-export CXXFLAGS="%{optflags} -I%{_includedir}/ncurses"
+export LDFLAGS="-I%{_includedir}/ncurses -lncurses"
+export CFLAGS="%{optflags} -I%{_includedir}/ncurses -lncurses"
+export CXXFLAGS="%{optflags} -I%{_includedir}/ncurses -lncurses"
 
 %configure2_5x \
 	 --with-curses
