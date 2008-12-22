@@ -1,7 +1,7 @@
 ## Do not apply library policy!!
 %define	name	readline
 %define	version	5.2
-%define	release	%mkrel 9
+%define	release	%mkrel 10
 
 %define major 5
 %define lib_name_orig lib%{name}
