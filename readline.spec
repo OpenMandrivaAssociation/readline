@@ -1,7 +1,7 @@
 ## Do not apply library policy!!
 %define	name	readline
 %define	version	5.2
-%define	release	%mkrel 10
+%define	release	%mkrel 11
 
 %define major 5
 %define lib_name_orig lib%{name}
@@ -103,7 +103,8 @@ export CFLAGS="%{optflags} -I%{_includedir}/ncurses -lncurses"
 export CXXFLAGS="%{optflags} -I%{_includedir}/ncurses -lncurses"
 
 %configure2_5x \
-	 --with-curses
+	 --with-curses \
+	 --enable-multibyte
 
 perl -p -i -e 's|-Wl,-rpath.*||' shlib/Makefile
 
