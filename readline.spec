@@ -6,7 +6,7 @@
 Summary:	Library for reading lines from a terminal
 Name:		readline
 Version:	6.2
-Release:	%mkrel 1
+Release:	%mkrel 2
 License:	GPLv2+
 Group:		System/Libraries
 Url:		http://tiswww.case.edu/php/chet/readline/rltop.html
@@ -17,6 +17,7 @@ Patch3:		readline-4.1-outdated.patch
 Patch4:		rl-header.patch
 Patch5:		rl-attribute.patch
 Patch6:		readline-6.0-fix-shared-libs-perms.patch
+Patch7:		readline62-001
 BuildRequires:	libncurses-devel
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
@@ -70,6 +71,7 @@ text of the line remains.
 %patch4 -p1 -b .header
 %patch5 -p1 -b .attribute
 %patch6 -p1 -b .fix-perms
+%patch7 -p0 -b .001
 
 libtoolize --copy --force
 
