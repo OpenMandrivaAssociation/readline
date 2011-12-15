@@ -6,7 +6,7 @@
 Summary:	Library for reading lines from a terminal
 Name:		readline
 Version:	6.2
-Release:	%mkrel 2
+Release:	3
 License:	GPLv2+
 Group:		System/Libraries
 Url:		http://tiswww.case.edu/php/chet/readline/rltop.html
@@ -19,7 +19,6 @@ Patch5:		rl-attribute.patch
 Patch6:		readline-6.0-fix-shared-libs-perms.patch
 Patch7:		readline62-001
 BuildRequires:	libncurses-devel
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
 The "readline" library will read a line from the terminal and return it,
@@ -41,7 +40,7 @@ linked to readline.
 Summary:	Readline documentation in GNU info format
 Group:		Books/Computer books
 Provides:	%{name}-doc = %{version}-%{release}
-Requires:	%{libname} = %{version}-%{release}
+Requires:	%{libname} >= %{version}-%{release}
 Obsoletes:	%{libname}-doc
 
 %description doc
@@ -50,11 +49,11 @@ This package contains readline documentation in the GNU info format.
 %package -n %{develname}
 Summary:	Files for developing programs that use the readline library
 Group:		Development/C
-Requires:	%{libname} = %{version}-%{release}
+Requires:	%{libname} >= %{version}-%{release}
 Obsoletes:	%{name}-devel < 6.0-2
 Provides:	%{lib_name_orig}-devel = %{version}-%{release}
 Provides:	%{name}-devel = %{version}-%{release}
-Requires:	libncurses-devel 
+Requires:	libncurses-devel
 Obsoletes:	%{mklibname readline 5 -d}
 
 %description -n	%{develname}
@@ -103,15 +102,8 @@ rm -f %{buildroot}/%{_lib}/*.old
 
 perl -p -i -e 's|/usr/local/bin/perl|/usr/bin/perl|' doc/texi2html
 
-%clean
-rm -rf %{buildroot}
-
-%if %mdkversion < 200900
-%post -n %{libname} -p /sbin/ldconfig
-%endif
-%if %mdkversion < 200900
-%postun -n %{libname} -p /sbin/ldconfig
-%endif
+# cleanups
+rm -f %{buildroot}%{_libdir}/*.*a
 
 %post doc
 %{_install_info history.info}
@@ -122,19 +114,16 @@ rm -rf %{buildroot}
 %{_remove_install_info readline.info}
 
 %files -n %{libname}
-%defattr(-,root,root)
 /%{_lib}/lib*.so.%{major}*
 
 %files doc
 %{_infodir}/*info*
 
 %files -n %{develname}
-%defattr(-,root,root)
 %doc CHANGELOG CHANGES MANIFEST README USAGE
 %doc doc examples support
 %{_mandir}/man3/*
 %{_datadir}/readline
 %{_includedir}/readline
-%{_libdir}/lib*.a
 %{_libdir}/lib*.so
 /%{_lib}/*so
