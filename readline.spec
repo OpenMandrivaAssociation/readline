@@ -51,9 +51,7 @@ Summary:	Files for developing programs that use the readline library
 Group:		Development/C
 Requires:	%{libname} >= %{version}-%{release}
 Obsoletes:	%{name}-devel < 6.0-2
-Provides:	%{lib_name_orig}-devel = %{version}-%{release}
 Provides:	%{name}-devel = %{version}-%{release}
-Requires:	libncurses-devel
 Obsoletes:	%{mklibname readline 5 -d}
 
 %description -n	%{develname}
