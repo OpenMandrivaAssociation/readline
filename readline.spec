@@ -1,7 +1,7 @@
 %define major 6
 %define lib_name_orig lib%{name}
 %define libname %mklibname %{name} %{major}
-%define develname %mklibname %{name} -d
+%define devname %mklibname %{name} -d
 
 Summary:	Library for reading lines from a terminal
 Name:		readline
@@ -26,7 +26,7 @@ allowing the user to edit the line with the standard emacs editing keys.
 It allows the programmer to give the user an easier-to-use and more
 intuitive interface.
 
-%package -n %{libname}
+%package -n     %{libname}
 Summary:	Shared libraries for readline
 Group:		System/Libraries
 Obsoletes:	%{name}
@@ -36,24 +36,24 @@ Provides:	%{name} = %{EVRD}
 This package contains the library needed to run programs dynamically
 linked to readline.
 
-%package doc
+%package        doc
 Summary:	Readline documentation in GNU info format
 Group:		Books/Computer books
 Provides:	%{name}-doc = %{EVRD}
 Requires:	%{libname} = %{EVRD}
 Obsoletes:	%{libname}-doc
 
-%description doc
+%description    doc
 This package contains readline documentation in the GNU info format.
 
-%package -n %{develname}
+%package -n     %{devname}
 Summary:	Files for developing programs that use the readline library
 Group:		Development/C
 Requires:	%{libname} = %{EVRD}
 Provides:	%{name}-devel = %{EVRD}
 Obsoletes:	%{mklibname readline 5 -d}
 
-%description -n	%{develname}
+%description -n %{devname}
 The "readline" library will read a line from the terminal and return it,
 using prompt as a prompt.  If prompt is null, no prompt is issued.  The
 line returned is allocated with malloc(3), so the caller must free it when
@@ -85,7 +85,6 @@ perl -p -i -e 's|-Wl,-rpath.*||' shlib/Makefile
 %make
 
 %install
-rm -rf %{buildroot}
 %makeinstall_std
 
 # put all libs in /lib because some package needs it
@@ -114,9 +113,10 @@ rm -f %{buildroot}%{_libdir}/*.*a
 /%{_lib}/lib*.so.%{major}*
 
 %files doc
-%{_infodir}/*info*
+%{_infodir}/history.info*
+%{_infodir}/readline.info*
 
-%files -n %{develname}
+%files -n %{devname}
 %doc CHANGELOG CHANGES MANIFEST README USAGE
 %doc doc examples support
 %{_mandir}/man3/*
