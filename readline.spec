@@ -102,10 +102,12 @@ rm -f %{buildroot}%{_libdir}/*.*a
 %post doc
 %{_install_info history.info}
 %{_install_info readline.info}
+%{_install_info rluserman.info}
 
 %preun doc
 %{_remove_install_info history.info}
 %{_remove_install_info readline.info}
+%{_remove_install_info rluserman.info}
 
 %files -n %{libname}
 /%{_lib}/lib*.so.%{major}*
@@ -113,6 +115,7 @@ rm -f %{buildroot}%{_libdir}/*.*a
 %files doc
 %{_infodir}/history.info*
 %{_infodir}/readline.info*
+%{_infodir}/rluserman.info*
 
 %files -n %{devname}
 %doc CHANGELOG CHANGES MANIFEST README USAGE
