@@ -29,7 +29,6 @@ intuitive interface.
 %package -n     %{libname}
 Summary:	Shared libraries for readline
 Group:		System/Libraries
-Obsoletes:	%{name}
 Provides:	%{name} = %{EVRD}
 
 %description -n	%{libname}
