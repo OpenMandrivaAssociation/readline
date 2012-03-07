@@ -6,7 +6,7 @@
 Summary:	Library for reading lines from a terminal
 Name:		readline
 Version:	6.2
-Release:	3
+Release:	4
 License:	GPLv2+
 Group:		System/Libraries
 Url:		http://tiswww.case.edu/php/chet/readline/rltop.html
@@ -18,7 +18,7 @@ Patch4:		rl-header.patch
 Patch5:		rl-attribute.patch
 Patch6:		readline-6.0-fix-shared-libs-perms.patch
 Patch7:		readline62-001
-BuildRequires:	libncurses-devel
+BuildRequires:	ncurses-devel
 
 %description
 The "readline" library will read a line from the terminal and return it,
