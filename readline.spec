@@ -50,7 +50,6 @@ This package contains readline documentation in the GNU info format.
 Summary:	Files for developing programs that use the readline library
 Group:		Development/C
 Requires:	%{libname} >= %{version}-%{release}
-Obsoletes:	%{name}-devel < 6.0-2
 Provides:	%{name}-devel = %{version}-%{release}
 Obsoletes:	%{mklibname readline 5 -d}
 
