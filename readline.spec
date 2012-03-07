@@ -30,7 +30,7 @@ intuitive interface.
 Summary:	Shared libraries for readline
 Group:		System/Libraries
 Obsoletes:	%{name}
-Provides:	%{name} = %{version}-%{release}
+Provides:	%{name} = %{EVRD}
 
 %description -n	%{libname}
 This package contains the library needed to run programs dynamically
@@ -39,8 +39,8 @@ linked to readline.
 %package doc
 Summary:	Readline documentation in GNU info format
 Group:		Books/Computer books
-Provides:	%{name}-doc = %{version}-%{release}
-Requires:	%{libname} >= %{version}-%{release}
+Provides:	%{name}-doc = %{EVRD}
+Requires:	%{libname} = %{EVRD}
 Obsoletes:	%{libname}-doc
 
 %description doc
@@ -49,8 +49,8 @@ This package contains readline documentation in the GNU info format.
 %package -n %{develname}
 Summary:	Files for developing programs that use the readline library
 Group:		Development/C
-Requires:	%{libname} >= %{version}-%{release}
-Provides:	%{name}-devel = %{version}-%{release}
+Requires:	%{libname} = %{EVRD}
+Provides:	%{name}-devel = %{EVRD}
 Obsoletes:	%{mklibname readline 5 -d}
 
 %description -n	%{develname}
