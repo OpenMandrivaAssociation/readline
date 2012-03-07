@@ -1,5 +1,4 @@
-%define major 6
-%define lib_name_orig lib%{name}
+%define major   6
 %define libname %mklibname %{name} %{major}
 %define devname %mklibname %{name} -d
 
