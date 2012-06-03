@@ -5,7 +5,7 @@
 Summary:	Library for reading lines from a terminal
 Name:		readline
 Version:	6.2
-Release:	4
+Release:	5
 License:	GPLv2+
 Group:		System/Libraries
 Url:		http://tiswww.case.edu/php/chet/readline/rltop.html
@@ -98,16 +98,6 @@ perl -p -i -e 's|/usr/local/bin/perl|/usr/bin/perl|' doc/texi2html
 
 # cleanups
 rm -f %{buildroot}%{_libdir}/*.*a
-
-%post doc
-%{_install_info history.info}
-%{_install_info readline.info}
-%{_install_info rluserman.info}
-
-%preun doc
-%{_remove_install_info history.info}
-%{_remove_install_info readline.info}
-%{_remove_install_info rluserman.info}
 
 %files -n %{libname}
 /%{_lib}/lib*.so.%{major}*
