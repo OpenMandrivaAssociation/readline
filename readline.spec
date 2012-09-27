@@ -54,7 +54,7 @@ Summary:	Shared libhistory library for readline
 Group:		System/Libraries
 Conflicts:	%{libname} < 6.2-6
 
-%description -n	uclibc-%{libname}
+%description -n	%{libhist}
 This package contains the libhistory library from readline.
 
 %package -n	uclibc-%{libhist}
