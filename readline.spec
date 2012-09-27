@@ -68,10 +68,6 @@ This package contains the libhistory library from readline.
 Summary:	Readline documentation in GNU info format
 Group:		Books/Computer books
 Provides:	%{name}-doc = %{EVRD}
-Requires:	%{libname} = %{EVRD}
-%if %{with uclibc}
-Requires:	%{libname} = %{EVRD}
-%endif
 Obsoletes:	%{libname}-doc
 BuildArch:	noarch
 
