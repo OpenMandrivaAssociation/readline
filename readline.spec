@@ -73,6 +73,7 @@ Requires:	%{libname} = %{EVRD}
 Requires:	%{libname} = %{EVRD}
 %endif
 Obsoletes:	%{libname}-doc
+BuildArch:	noarch
 
 %description	doc
 This package contains readline documentation in the GNU info format.
