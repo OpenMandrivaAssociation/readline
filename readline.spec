@@ -92,9 +92,6 @@ sed -e 's#/usr/local#%{_prefix}#g' -i doc/texi2html
 libtoolize --copy --force
 
 %build
-#export LDFLAGS="-I%{_includedir}/ncurses -lncursesw"
-#export CFLAGS="%{optflags} -lncursesw"
-#export CXXFLAGS="%{optflags} -lncursesw"
 CONFIGURE_TOP=$PWD
 
 %if %{with uclibc}
@@ -103,6 +100,7 @@ pushd uclibc
 %configure2_5x	CC="%{uclibc_cc}" \
 		CFLAGS="%{uclibc_cflags}" \
 		--libdir=%{uclibc_root}%{_libdir} \
+		--enable-static=no \
 		--with-curses \
 		--enable-multibyte
 
@@ -112,7 +110,8 @@ popd
 
 mkdir -p system
 pushd system
-%configure2_5x	--with-curses \
+%configure2_5x	--enable-static=no \
+		--with-curses \
 		--enable-multibyte
 
 %make
@@ -122,10 +121,10 @@ popd
 %if %{with uclibc}
 %makeinstall_std -C uclibc
 install -d %{buildroot}%{uclibc_root}/%{_lib}
-for l in libhistory libreadline; do
-	rm %{buildroot}%{uclibc_root}%{_libdir}/${l}.{a,so}
-	mv %{buildroot}%{uclibc_root}%{_libdir}/${l}.so.%{major}* %{buildroot}%{uclibc_root}/%{_lib}
-	ln -sr %{buildroot}%{uclibc_root}/%{_lib}/${l}.so.%{major}.* %{buildroot}%{uclibc_root}%{_libdir}/${l}.so
+for l in libhistory.so libreadline.so; do
+	rm %{buildroot}%{uclibc_root}%{_libdir}/${l}
+	mv %{buildroot}%{uclibc_root}%{_libdir}/${l}.%{major}* %{buildroot}%{uclibc_root}/%{_lib}
+	ln -sr %{buildroot}%{uclibc_root}/%{_lib}/${l}.%{major}.* %{buildroot}%{uclibc_root}%{_libdir}/${l}
 done
 %endif
 
@@ -133,10 +132,10 @@ done
 # put all libs in /lib because some package needs it
 # before /usr is mounted
 install -d %{buildroot}/%{_lib}
-for l in libhistory libreadline; do
-	rm %{buildroot}%{_libdir}/${l}.{a,so}
-	mv %{buildroot}%{_libdir}/${l}.so.%{major}* %{buildroot}/%{_lib}
-	ln -sr %{buildroot}/%{_lib}/${l}.so.%{major}.* %{buildroot}%{_libdir}/${l}.so
+for l in libhistory.so libreadline.so; do
+	rm %{buildroot}%{_libdir}/${l}
+	mv %{buildroot}%{_libdir}/${l}.%{major}* %{buildroot}/%{_lib}
+	ln -sr %{buildroot}/%{_lib}/${l}.%{major}.* %{buildroot}%{_libdir}/${l}
 done
 
 %files -n %{libname}
@@ -158,7 +157,6 @@ done
 %doc CHANGELOG CHANGES MANIFEST README USAGE
 %doc doc examples support
 %{_mandir}/man3/*
-%{_datadir}/readline
 %{_includedir}/readline
 %{_libdir}/libhistory.so
 %{_libdir}/libreadline.so
