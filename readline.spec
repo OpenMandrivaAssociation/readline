@@ -88,6 +88,7 @@ text of the line remains.
 %patch7 -p0 -b .001
 %patch8 -p1 -b .libs~
 
+sed -e 's#/usr/local#%{_prefix}#g' -i doc/texi2html
 libtoolize --copy --force
 
 %build
@@ -137,11 +138,6 @@ for l in libhistory libreadline; do
 	mv %{buildroot}%{_libdir}/${l}.so.%{major}* %{buildroot}/%{_lib}
 	ln -sr %{buildroot}/%{_lib}/${l}.so.%{major}.* %{buildroot}%{_libdir}/${l}.so
 done
-
-## The make install moves the existing libs with a suffix of old. Urgh.
-rm -f %{buildroot}/%{_lib}/*.old
-
-perl -p -i -e 's|/usr/local/bin/perl|/usr/bin/perl|' doc/texi2html
 
 %files -n %{libname}
 /%{_lib}/libhistory.so.%{major}*
