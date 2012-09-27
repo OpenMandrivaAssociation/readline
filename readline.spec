@@ -1,5 +1,6 @@
 %define	major	6
 %define	libname	%mklibname %{name} %{major}
+%define	libhist	%mklibname history %{major}
 %define	devname	%mklibname %{name} -d
 
 %bcond_without	uclibc
@@ -32,7 +33,7 @@ It allows the programmer to give the user an easier-to-use and more
 intuitive interface.
 
 %package -n	%{libname}
-Summary:	Shared libraries for readline
+Summary:	Shared libreadline library for readline
 Group:		System/Libraries
 Provides:	%{name} = %{EVRD}
 
@@ -41,12 +42,27 @@ This package contains the library needed to run programs dynamically
 linked to readline.
 
 %package -n	uclibc-%{libname}
-Summary:	Shared libraries for readline (uClibc build)
+Summary:	Shared libreadline library for readline (uClibc build)
 Group:		System/Libraries
 
 %description -n	uclibc-%{libname}
 This package contains the library needed to run programs dynamically
 linked to readline.
+
+%package -n	%{libhist}
+Summary:	Shared libhistory library for readline
+Group:		System/Libraries
+Conflicts:	%{libname} < 6.2-6
+
+%description -n	%{libname}
+This package contains the libhistory library from readline.
+
+%package -n	uclibc-%{libhist}
+Summary:	Shared libhistory library for readline (uClibc Build)
+Group:		System/Libraries
+
+%description -n	uclibc-%{libname}
+This package contains the libhistory library from readline.
 
 %package	doc
 Summary:	Readline documentation in GNU info format
@@ -65,8 +81,10 @@ This package contains readline documentation in the GNU info format.
 Summary:	Files for developing programs that use the readline library
 Group:		Development/C
 Requires:	%{libname} = %{EVRD}
+Requires:	%{libhist} = %{EVRD}
 %if %{with uclibc}
 Requires:	uclibc-%{libname} = %{EVRD}
+Requires:	uclibc-%{libhist} = %{EVRD}
 %endif
 Provides:	%{name}-devel = %{EVRD}
 Obsoletes:	%{mklibname readline 5 -d}
@@ -140,11 +158,15 @@ done
 
 %files -n %{libname}
 /%{_lib}/libhistory.so.%{major}*
+
+%files -n %{libhist}
 /%{_lib}/libreadline.so.%{major}*
 
 %if %{with uclibc}
 %files -n uclibc-%{libname}
 %{uclibc_root}/%{_lib}/libhistory.so.%{major}*
+
+%files -n uclibc-%{libhist}
 %{uclibc_root}/%{_lib}/libreadline.so.%{major}*
 %endif
 
