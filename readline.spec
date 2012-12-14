@@ -8,7 +8,7 @@
 Summary:	Library for reading lines from a terminal
 Name:		readline
 Version:	6.2
-Release:	7
+Release:	8
 License:	GPLv2+
 Group:		System/Libraries
 Url:		http://tiswww.case.edu/php/chet/readline/rltop.html
@@ -112,9 +112,7 @@ CONFIGURE_TOP=$PWD
 %if %{with uclibc}
 mkdir -p uclibc
 pushd uclibc
-%configure2_5x	CC="%{uclibc_cc}" \
-		CFLAGS="%{uclibc_cflags}" \
-		--libdir=%{uclibc_root}%{_libdir} \
+%uclibc_configure \
 		--enable-static=no \
 		--with-curses \
 		--enable-multibyte
