@@ -21,6 +21,7 @@ Patch5:		rl-attribute.patch
 Patch6:		readline-6.0-fix-shared-libs-perms.patch
 Patch7:		readline62-001
 Patch8:		readline-6.2-fix-missing-linkage.patch
+Patch9:		readline-aarch64.patch
 BuildRequires:	ncurses-devel
 %if %{with uclibc}
 BuildRequires:	uClibc-devel >= 0.9.33.2-11
@@ -102,6 +103,7 @@ text of the line remains.
 %patch6 -p1 -b .fix-perms
 %patch7 -p0 -b .001
 %patch8 -p1 -b .libs~
+%patch9 -p1 -b .aarch64
 
 sed -e 's#/usr/local#%{_prefix}#g' -i doc/texi2html
 libtoolize --copy --force
