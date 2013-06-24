@@ -17,8 +17,8 @@ entire line.
 
 Patch (apply with `patch -p0'):
 
-*** ../readline-6.2-patched/vi_mode.c	2010-11-20 19:51:39.000000000 -0500
---- vi_mode.c	2011-02-17 20:24:25.000000000 -0500
+*** readline-6.2-patched/vi_mode.c	2010-11-20 19:51:39.000000000 -0500
+--- ./vi_mode.c	2011-02-17 20:24:25.000000000 -0500
 ***************
 *** 1115,1119 ****
         _rl_vi_last_motion = c;
@@ -32,8 +32,8 @@ Patch (apply with `patch -p0'):
 !       return (vidomove_dispatch (m));
       }
   #if defined (READLINE_CALLBACKS)
-*** ../readline-6.2-patched/callback.c	2010-06-06 12:18:58.000000000 -0400
---- callback.c	2011-02-17 20:43:28.000000000 -0500
+*** readline-6.2-patched/callback.c	2010-06-06 12:18:58.000000000 -0400
+--- ./callback.c	2011-02-17 20:43:28.000000000 -0500
 ***************
 *** 149,152 ****
 --- 149,155 ----

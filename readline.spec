@@ -8,7 +8,7 @@
 Summary:	Library for reading lines from a terminal
 Name:		readline
 Version:	6.2
-Release:	12
+Release:	13
 License:	GPLv2+
 Group:		System/Libraries
 Url:		http://tiswww.case.edu/php/chet/readline/rltop.html
@@ -37,6 +37,7 @@ intuitive interface.
 Summary:	Shared libreadline library for readline
 Group:		System/Libraries
 Provides:	%{name} = %{EVRD}
+Conflicts:	%{_lib}history < 6.2-13
 
 %description -n	%{libname}
 This package contains the library needed to run programs dynamically
@@ -45,6 +46,7 @@ linked to readline.
 %package -n	uclibc-%{libname}
 Summary:	Shared libreadline library for readline (uClibc build)
 Group:		System/Libraries
+Conflicts:	uclibc-%{_lib}history < 6.2-13
 
 %description -n	uclibc-%{libname}
 This package contains the library needed to run programs dynamically
@@ -53,7 +55,7 @@ linked to readline.
 %package -n	%{libhist}
 Summary:	Shared libhistory library for readline
 Group:		System/Libraries
-Conflicts:	%{libname} < 6.2-6
+Conflicts:	%{_lib}readline6 < 6.2-13
 
 %description -n	%{libhist}
 This package contains the libhistory library from readline.
@@ -61,6 +63,7 @@ This package contains the libhistory library from readline.
 %package -n	uclibc-%{libhist}
 Summary:	Shared libhistory library for readline (uClibc Build)
 Group:		System/Libraries
+Conflicts:	uclibc-%{_lib}readline6 < 6.2-13
 
 %description -n	uclibc-%{libhist}
 This package contains the libhistory library from readline.
@@ -85,7 +88,6 @@ Requires:	uclibc-%{libname} = %{EVRD}
 Requires:	uclibc-%{libhist} = %{EVRD}
 %endif
 Provides:	%{name}-devel = %{EVRD}
-Obsoletes:	%{mklibname readline 5 -d}
 
 %description -n	%{devname}
 The "readline" library will read a line from the terminal and return it,
@@ -96,14 +98,7 @@ text of the line remains.
 
 %prep
 %setup -q
-%patch0 -p1 -b .no_rpath
-%patch3 -p1 -b .outdated
-%patch4 -p1 -b .header
-%patch5 -p1 -b .attribute
-%patch6 -p1 -b .fix-perms
-%patch7 -p0 -b .001
-%patch8 -p1 -b .libs~
-%patch9 -p1 -b .aarch64
+%apply_patches
 
 sed -e 's#/usr/local#%{_prefix}#g' -i doc/texi2html
 libtoolize --copy --force
@@ -115,9 +110,9 @@ CONFIGURE_TOP=$PWD
 mkdir -p uclibc
 pushd uclibc
 %uclibc_configure \
-		--enable-static=no \
-		--with-curses \
-		--enable-multibyte
+	--enable-static=no \
+	--with-curses \
+	--enable-multibyte
 
 %make
 popd
@@ -125,9 +120,10 @@ popd
 
 mkdir -p system
 pushd system
-%configure2_5x	--enable-static=no \
-		--with-curses \
-		--enable-multibyte
+%configure2_5x \
+	--enable-static=no \
+	--with-curses \
+	--enable-multibyte
 
 %make
 popd
@@ -153,17 +149,17 @@ for l in libhistory.so libreadline.so; do
 	ln -sr %{buildroot}/%{_lib}/${l}.%{major}.* %{buildroot}%{_libdir}/${l}
 done
 
-%files -n %{libname}
+%files -n %{libhist}
 /%{_lib}/libhistory.so.%{major}*
 
-%files -n %{libhist}
+%files -n %{libname}
 /%{_lib}/libreadline.so.%{major}*
 
 %if %{with uclibc}
-%files -n uclibc-%{libname}
+%files -n uclibc-%{libhist}
 %{uclibc_root}/%{_lib}/libhistory.so.%{major}*
 
-%files -n uclibc-%{libhist}
+%files -n uclibc-%{libname}
 %{uclibc_root}/%{_lib}/libreadline.so.%{major}*
 %endif
 
@@ -183,3 +179,4 @@ done
 %{uclibc_root}%{_libdir}/libhistory.so
 %{uclibc_root}%{_libdir}/libreadline.so
 %endif
+
