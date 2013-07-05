@@ -8,7 +8,7 @@
 Summary:	Library for reading lines from a terminal
 Name:		readline
 Version:	6.2
-Release:	13
+Release:	14
 License:	GPLv2+
 Group:		System/Libraries
 Url:		http://tiswww.case.edu/php/chet/readline/rltop.html
@@ -38,6 +38,7 @@ Summary:	Shared libreadline library for readline
 Group:		System/Libraries
 Provides:	%{name} = %{EVRD}
 Conflicts:	%{_lib}history < 6.2-13
+Obsoletes:	%{_lib}history < 6.2-13
 
 %description -n	%{libname}
 This package contains the library needed to run programs dynamically
@@ -56,6 +57,7 @@ linked to readline.
 Summary:	Shared libhistory library for readline
 Group:		System/Libraries
 Conflicts:	%{_lib}readline6 < 6.2-13
+Obsoletes:	%{_lib}readline6 < 6.2-13
 
 %description -n	%{libhist}
 This package contains the libhistory library from readline.
