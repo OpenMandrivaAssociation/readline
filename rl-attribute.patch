@@ -1,7 +1,6 @@
-diff -urNad readline5-5.2~/readline.h readline5-5.2/readline.h
---- readline5-5.2~/readline.h	2006-08-16 21:16:59.000000000 +0200
-+++ readline5-5.2/readline.h	2006-10-28 14:03:36.000000000 +0200
-@@ -373,7 +373,7 @@
+--- readline-6.3/readline.h.0005~	2014-03-03 02:57:33.459212488 +0100
++++ readline-6.3/readline.h	2014-03-03 02:57:33.460212495 +0100
+@@ -381,7 +381,7 @@ extern int rl_reset_line_state PARAMS((v
  extern int rl_crlf PARAMS((void));
  
  #if defined (USE_VARARGS) && defined (PREFER_STDARG)
@@ -10,9 +9,8 @@ diff -urNad readline5-5.2~/readline.h readline5-5.2/readline.h
  #else
  extern int rl_message ();
  #endif
-diff -urNad readline5-5.2~/rlstdc.h readline5-5.2/rlstdc.h
---- readline5-5.2~/rlstdc.h	2003-05-30 21:08:02.000000000 +0200
-+++ readline5-5.2/rlstdc.h	2006-10-28 14:03:36.000000000 +0200
+--- readline-6.3/rlstdc.h.0005~	2014-03-03 02:57:33.460212495 +0100
++++ readline-6.3/rlstdc.h	2014-03-03 02:59:50.803220133 +0100
 @@ -36,10 +36,10 @@
  #  endif
  #endif
@@ -27,4 +25,4 @@ diff -urNad readline5-5.2~/rlstdc.h readline5-5.2/rlstdc.h
 +#  define __rl_attribute__(x)
  #endif
  
- #endif /* !_RL_STDC_H_ */
+ /* Moved from config.h.in because readline.h:rl_message depends on these

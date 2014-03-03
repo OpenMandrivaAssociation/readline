@@ -7,8 +7,8 @@
 
 Summary:	Library for reading lines from a terminal
 Name:		readline
-Version:	6.2
-Release:	18
+Version:	6.3
+Release:	1
 License:	GPLv2+
 Group:		System/Libraries
 Url:		http://tiswww.case.edu/php/chet/readline/rltop.html
@@ -19,9 +19,7 @@ Patch3:		readline-4.1-outdated.patch
 Patch4:		rl-header.patch
 Patch5:		rl-attribute.patch
 Patch6:		readline-6.0-fix-shared-libs-perms.patch
-Patch7:		readline62-001
 Patch8:		readline-6.2-fix-missing-linkage.patch
-Patch9:		readline-aarch64.patch
 BuildRequires:	ncurses-devel
 %if %{with uclibc}
 BuildRequires:	uClibc-devel >= 0.9.33.2-11
@@ -150,6 +148,9 @@ for l in libhistory.so libreadline.so; do
 	mv %{buildroot}%{_libdir}/${l}.%{major}* %{buildroot}/%{_lib}
 	ln -sr %{buildroot}/%{_lib}/${l}.%{major}.* %{buildroot}%{_libdir}/${l}
 done
+
+rm -rf %{buildroot}%{_docdir}/readline/{CHANGES,INSTALL,README} \
+	%{buildroot}%{_prefix}/uclibc%{_docdir}/readline/{CHANGES,INSTALL,README}
 
 %files -n %{libhist}
 /%{_lib}/libhistory.so.%{major}*

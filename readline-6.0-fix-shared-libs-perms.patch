@@ -1,9 +1,8 @@
-diff -Naur readline-6.0/support/shlib-install readline-6.0-fix-shared-libs-perms/support/shlib-install
---- readline-6.0/support/shlib-install	2008-07-19 19:16:05.000000000 -0400
-+++ readline-6.0-fix-shared-libs-perms/support/shlib-install	2009-02-24 04:47:40.000000000 -0500
-@@ -71,7 +71,7 @@
+--- readline-6.3/support/shlib-install.0006~	2014-03-03 03:00:05.487327542 +0100
++++ readline-6.3/support/shlib-install	2014-03-03 03:00:49.078646055 +0100
+@@ -73,7 +73,7 @@ fi
  case "$host_os" in
- hpux*|darwin*|macosx*|linux*)
+ hpux*|darwin*|macosx*|linux*|solaris2*)
  	if [ -z "$uninstall" ]; then
 -		chmod 555 ${INSTALLDIR}/${LIBNAME}
 +		chmod 755 ${INSTALLDIR}/${LIBNAME}
