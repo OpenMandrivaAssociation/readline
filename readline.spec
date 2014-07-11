@@ -8,7 +8,7 @@
 Summary:	Library for reading lines from a terminal
 Name:		readline
 Version:	6.3
-Release:	4
+Release:	5
 License:	GPLv2+
 Group:		System/Libraries
 Url:		http://tiswww.case.edu/php/chet/readline/rltop.html
