@@ -2,24 +2,27 @@
 %define	libname	%mklibname %{name} %{major}
 %define	libhist	%mklibname history %{major}
 %define	devname	%mklibname %{name} -d
+%define patchlevel 8
 
 %bcond_without	uclibc
 
 Summary:	Library for reading lines from a terminal
 Name:		readline
 Version:	6.3
-Release:	5
+Release:	6
 License:	GPLv2+
 Group:		System/Libraries
 Url:		http://tiswww.case.edu/php/chet/readline/rltop.html
 Source0:	ftp://ftp.gnu.org/gnu/readline/%{name}-%{version}.tar.gz
 Source1:	ftp://ftp.gnu.org/gnu/readline/%{name}-%{version}.tar.gz.sig
-Patch0:		readline-4.3-no_rpath.patch
-Patch3:		readline-4.1-outdated.patch
-Patch4:		rl-header.patch
-Patch5:		rl-attribute.patch
-Patch6:		readline-6.0-fix-shared-libs-perms.patch
-Patch8:		readline-6.2-fix-missing-linkage.patch
+# Upstream patches
+%(for i in `seq 1 %{patchlevel}`; do echo Patch$i: ftp://ftp.gnu.org/pub/gnu/readline/readline-%{version}-patches/readline`echo %{version} |sed -e 's,\\.,,g'`-`echo 000$i |rev |cut -b1-3 |rev`; done)
+Patch1000:	readline-4.3-no_rpath.patch
+Patch1003:	readline-4.1-outdated.patch
+Patch1004:	rl-header.patch
+Patch1005:	rl-attribute.patch
+Patch1006:	readline-6.0-fix-shared-libs-perms.patch
+Patch1008:	readline-6.2-fix-missing-linkage.patch
 BuildRequires:	ncurses-devel
 %if %{with uclibc}
 BuildRequires:	uClibc-devel >= 0.9.33.2-11
@@ -98,6 +101,9 @@ text of the line remains.
 
 %prep
 %setup -q
+# Upstream patches
+%(for i in `seq 1 %{patchlevel}`; do echo %%patch$i -p0; done)
+
 %apply_patches
 
 sed -e 's#/usr/local#%{_prefix}#g' -i doc/texi2html
