@@ -9,7 +9,7 @@
 Summary:	Library for reading lines from a terminal
 Name:		readline
 Version:	6.3
-Release:	6
+Release:	7
 License:	GPLv2+
 Group:		System/Libraries
 Url:		http://tiswww.case.edu/php/chet/readline/rltop.html
@@ -126,7 +126,7 @@ popd
 
 mkdir -p system
 pushd system
-%configure2_5x \
+%configure \
 	--enable-static=no \
 	--with-curses \
 	--enable-multibyte
