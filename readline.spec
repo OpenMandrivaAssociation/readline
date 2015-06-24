@@ -59,7 +59,7 @@ linked to readline.
 %package -n	uclibc-%{devname}
 Summary:	Files for developing programs that use the readline library
 Group:		Development/C
-Requires:	%{devname} = %{EVRD}= %{EVRD}
+Requires:	%{devname} = %{EVRD}
 Requires:	uclibc-%{libname} = %{EVRD}
 Requires:	uclibc-%{libhist} = %{EVRD}
 Provides:	uclibc-%{name}-devel = %{EVRD}
