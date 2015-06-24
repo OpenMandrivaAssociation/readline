@@ -9,12 +9,12 @@
 Summary:	Library for reading lines from a terminal
 Name:		readline
 Version:	6.3
-Release:	8
+Release:	9
 License:	GPLv2+
 Group:		System/Libraries
 Url:		http://tiswww.case.edu/php/chet/readline/rltop.html
 Source0:	ftp://ftp.gnu.org/gnu/readline/%{name}-%{version}.tar.gz
-Source1:	ftp://ftp.gnu.org/gnu/readline/%{name}-%{version}.tar.gz.sig
+Source1:	%{name}.rpmlintrc
 # Upstream patches
 %(for i in `seq 1 %{patchlevel}`; do echo Patch$i: ftp://ftp.gnu.org/pub/gnu/readline/readline-%{version}-patches/readline`echo %{version} |sed -e 's,\\.,,g'`-`echo 000$i |rev |cut -b1-3 |rev`; done)
 Patch1000:	readline-4.3-no_rpath.patch
@@ -26,6 +26,7 @@ Patch1008:	readline-6.2-fix-missing-linkage.patch
 BuildRequires:	ncurses-devel
 %if %{with uclibc}
 BuildRequires:	uClibc-devel >= 0.9.33.2-11
+BuildRequires:	uclibc-ncurses-devel
 %endif
 
 %description
@@ -45,6 +46,7 @@ Obsoletes:	%{_lib}history < 6.2-13
 This package contains the library needed to run programs dynamically
 linked to readline.
 
+%if %{with uclibc}
 %package -n	uclibc-%{libname}
 Summary:	Shared libreadline library for readline (uClibc build)
 Group:		System/Libraries
@@ -53,6 +55,23 @@ Conflicts:	uclibc-%{_lib}history < 6.2-13
 %description -n	uclibc-%{libname}
 This package contains the library needed to run programs dynamically
 linked to readline.
+
+%package -n	uclibc-%{devname}
+Summary:	Files for developing programs that use the readline library
+Group:		Development/C
+Requires:	%{devname} = %{EVRD}= %{EVRD}
+Requires:	uclibc-%{libname} = %{EVRD}
+Requires:	uclibc-%{libhist} = %{EVRD}
+Provides:	uclibc-%{name}-devel = %{EVRD}
+Conflicts:	%{devname} < 6.3-9
+
+%description -n	uclibc-%{devname}
+The "readline" library will read a line from the terminal and return it,
+using prompt as a prompt.  If prompt is null, no prompt is issued.  The
+line returned is allocated with malloc(3), so the caller must free it when
+finished.  The line returned has the final newline removed, so only the
+text of the line remains.
+%endif
 
 %package -n	%{libhist}
 Summary:	Shared libhistory library for readline
@@ -63,6 +82,7 @@ Obsoletes:	%{_lib}readline6 < 6.2-13
 %description -n	%{libhist}
 This package contains the libhistory library from readline.
 
+%if %{with uclibc}
 %package -n	uclibc-%{libhist}
 Summary:	Shared libhistory library for readline (uClibc Build)
 Group:		System/Libraries
@@ -70,6 +90,7 @@ Conflicts:	uclibc-%{_lib}readline6 < 6.2-13
 
 %description -n	uclibc-%{libhist}
 This package contains the libhistory library from readline.
+%endif
 
 %package	doc
 Summary:	Readline documentation in GNU info format
@@ -86,10 +107,6 @@ Summary:	Files for developing programs that use the readline library
 Group:		Development/C
 Requires:	%{libname} = %{EVRD}
 Requires:	%{libhist} = %{EVRD}
-%if %{with uclibc}
-Requires:	uclibc-%{libname} = %{EVRD}
-Requires:	uclibc-%{libhist} = %{EVRD}
-%endif
 Provides:	%{name}-devel = %{EVRD}
 
 %description -n	%{devname}
@@ -170,6 +187,10 @@ rm -rf %{buildroot}%{_docdir}/readline/{CHANGES,INSTALL,README} \
 
 %files -n uclibc-%{libname}
 %{uclibc_root}/%{_lib}/libreadline.so.%{major}*
+
+%files -n uclibc-%{devname}
+%{uclibc_root}%{_libdir}/libhistory.so
+%{uclibc_root}%{_libdir}/libreadline.so
 %endif
 
 %files doc
@@ -184,8 +205,4 @@ rm -rf %{buildroot}%{_docdir}/readline/{CHANGES,INSTALL,README} \
 %{_includedir}/readline
 %{_libdir}/libhistory.so
 %{_libdir}/libreadline.so
-%if %{with uclibc}
-%{uclibc_root}%{_libdir}/libhistory.so
-%{uclibc_root}%{_libdir}/libreadline.so
-%endif
 
