@@ -1,22 +1,29 @@
-%define	major	6
+%define	major	7
 %define	libname	%mklibname %{name} %{major}
 %define	libhist	%mklibname history %{major}
 %define	devname	%mklibname %{name} -d
-%define patchlevel 8
+%define patchlevel 0
+%define pre alpha
 
 %bcond_without	uclibc
 
 Summary:	Library for reading lines from a terminal
 Name:		readline
-Version:	6.3
-Release:	10
+Version:	7.0
+%if "%{pre}" != ""
+Release:	0.%{pre}.1
+Source0:	ftp://ftp.cwru.edu/pub/bash/%{name}-%{version}-%{pre}.tar.gz
+%else
+Release:	1
+Source0:	ftp://ftp.gnu.org/gnu/readline/%{name}-%{version}.tar.gz
+%endif
 License:	GPLv2+
 Group:		System/Libraries
 Url:		http://tiswww.case.edu/php/chet/readline/rltop.html
-Source0:	ftp://ftp.gnu.org/gnu/readline/%{name}-%{version}.tar.gz
-Source1:	%{name}.rpmlintrc
 # Upstream patches
+%if %{patchlevel}
 %(for i in `seq 1 %{patchlevel}`; do echo Patch$i: ftp://ftp.gnu.org/pub/gnu/readline/readline-%{version}-patches/readline`echo %{version} |sed -e 's,\\.,,g'`-`echo 000$i |rev |cut -b1-3 |rev`; done)
+%endif
 Patch1000:	readline-4.3-no_rpath.patch
 Patch1003:	readline-4.1-outdated.patch
 Patch1004:	rl-header.patch
@@ -117,9 +124,15 @@ finished.  The line returned has the final newline removed, so only the
 text of the line remains.
 
 %prep
+%if "%{pre}" != ""
+%setup -qn %{name}-%{version}-%{pre}
+%else
 %setup -q
+%endif
 # Upstream patches
+%if %{patchlevel}
 %(for i in `seq 1 %{patchlevel}`; do echo %%patch$i -p0; done)
+%endif
 
 %apply_patches
 
