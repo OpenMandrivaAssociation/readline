@@ -1,9 +1,9 @@
-%define	major	7
-%define	libname	%mklibname %{name} %{major}
-%define	libhist	%mklibname history %{major}
-%define	devname	%mklibname %{name} -d
+%define major 7
+%define libname %mklibname %{name} %{major}
+%define libhist %mklibname history %{major}
+%define devname %mklibname %{name} -d
 %define patchlevel 0
-%define pre alpha
+%define pre beta
 
 # (tpg) keep it disabled !
 %bcond_with uclibc
@@ -12,10 +12,10 @@ Summary:	Library for reading lines from a terminal
 Name:		readline
 Version:	7.0
 %if "%{pre}" != ""
-Release:	0.%{pre}.1
+Release:	0.%{pre}.2
 Source0:	ftp://ftp.cwru.edu/pub/bash/%{name}-%{version}-%{pre}.tar.gz
 %else
-Release:	3
+Release:	1
 Source0:	ftp://ftp.gnu.org/gnu/readline/%{name}-%{version}.tar.gz
 %endif
 License:	GPLv2+
@@ -31,7 +31,7 @@ Patch1004:	rl-header.patch
 Patch1005:	rl-attribute.patch
 Patch1006:	readline-6.0-fix-shared-libs-perms.patch
 Patch1008:	readline-6.2-fix-missing-linkage.patch
-BuildRequires:	ncurses-devel
+#BuildRequires:	ncurses-devel
 %if %{with uclibc}
 BuildRequires:	uClibc-devel >= 0.9.33.2-11
 BuildRequires:	uclibc-ncurses-devel
