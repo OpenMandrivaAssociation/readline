@@ -15,7 +15,7 @@ Version:	7.0
 Release:	0.%{pre}.1
 Source0:	ftp://ftp.cwru.edu/pub/bash/%{name}-%{version}-%{pre}.tar.gz
 %else
-Release:	2
+Release:	3
 Source0:	ftp://ftp.gnu.org/gnu/readline/%{name}-%{version}.tar.gz
 %endif
 License:	GPLv2+
