@@ -9,7 +9,7 @@ Summary:	Library for reading lines from a terminal
 Name:		readline
 Version:	7.0
 %if "%{pre}" != ""
-Release:	0.%{pre}.3
+Release:	0.%{pre}.4
 Source0:	ftp://ftp.cwru.edu/pub/bash/%{name}-%{version}-%{pre}.tar.gz
 %else
 Release:	1
