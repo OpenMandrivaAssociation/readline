@@ -3,13 +3,13 @@
 %define libhist %mklibname history %{major}
 %define devname %mklibname %{name} -d
 %define patchlevel 0
-%define pre rc1
+%define pre rc2
 
 Summary:	Library for reading lines from a terminal
 Name:		readline
 Version:	7.0
 %if "%{pre}" != ""
-Release:	0.%{pre}.4
+Release:	0.%{pre}.5
 Source0:	ftp://ftp.cwru.edu/pub/bash/%{name}-%{version}-%{pre}.tar.gz
 %else
 Release:	1
