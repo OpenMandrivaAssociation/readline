@@ -2,7 +2,7 @@
 %define libname %mklibname %{name} %{major}
 %define libhist %mklibname history %{major}
 %define devname %mklibname %{name} -d
-%define patchlevel 0
+%define patchlevel 1
 %define pre %nil
 
 Summary:	Library for reading lines from a terminal
@@ -12,7 +12,7 @@ Version:	7.0
 Release:	0.%{pre}.5
 Source0:	ftp://ftp.cwru.edu/pub/bash/%{name}-%{version}-%{pre}.tar.gz
 %else
-Release:	1
+Release:	2
 Source0:	ftp://ftp.gnu.org/gnu/readline/%{name}-%{version}.tar.gz
 %endif
 License:	GPLv2+
@@ -129,7 +129,7 @@ rm -rf %{buildroot}%{_docdir}/readline/{CHANGES,INSTALL,README}
 %{_infodir}/rluserman.info*
 
 %files -n %{devname}
-%doc CHANGELOG CHANGES MANIFEST README USAGE
+%doc MANIFEST README USAGE
 %doc doc examples support
 %{_mandir}/man3/*
 %{_includedir}/readline
