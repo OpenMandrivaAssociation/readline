@@ -12,7 +12,7 @@ Version:	7.0
 Release:	0.%{pre}.5
 Source0:	ftp://ftp.cwru.edu/pub/bash/%{name}-%{version}-%{pre}.tar.gz
 %else
-Release:	3
+Release:	4
 Source0:	ftp://ftp.gnu.org/gnu/readline/%{name}-%{version}.tar.gz
 %endif
 License:	GPLv2+
@@ -36,44 +36,44 @@ allowing the user to edit the line with the standard emacs editing keys.
 It allows the programmer to give the user an easier-to-use and more
 intuitive interface.
 
-%package -n	%{libname}
+%package -n %{libname}
 Summary:	Shared libreadline library for readline
 Group:		System/Libraries
 Provides:	%{name} = %{EVRD}
 Conflicts:	%{_lib}history < 6.2-13
 Obsoletes:	%{_lib}history < 6.2-13
 
-%description -n	%{libname}
+%description -n %{libname}
 This package contains the library needed to run programs dynamically
 linked to readline.
 
-%package -n	%{libhist}
+%package -n %{libhist}
 Summary:	Shared libhistory library for readline
 Group:		System/Libraries
 Conflicts:	%{_lib}readline6 < 6.2-13
 Obsoletes:	%{_lib}readline6 < 6.2-13
 
-%description -n	%{libhist}
+%description -n %{libhist}
 This package contains the libhistory library from readline.
 
-%package	doc
+%package doc
 Summary:	Readline documentation in GNU info format
 Group:		Books/Computer books
 Provides:	%{name}-doc = %{EVRD}
 Obsoletes:	%{libname}-doc < %{EVRD}
 BuildArch:	noarch
 
-%description	doc
+%description doc
 This package contains readline documentation in the GNU info format.
 
-%package -n	%{devname}
+%package -n %{devname}
 Summary:	Files for developing programs that use the readline library
 Group:		Development/C
 Requires:	%{libname} = %{EVRD}
 Requires:	%{libhist} = %{EVRD}
 Provides:	%{name}-devel = %{EVRD}
 
-%description -n	%{devname}
+%description -n %{devname}
 The "readline" library will read a line from the terminal and return it,
 using prompt as a prompt.  If prompt is null, no prompt is issued.  The
 line returned is allocated with malloc(3), so the caller must free it when
@@ -91,7 +91,12 @@ text of the line remains.
 %(for i in `seq 1 %{patchlevel}`; do echo %%patch$i -p0; done)
 %endif
 
-%apply_patches
+%patch1000 -p1
+%patch1003 -p1
+%patch1004 -p1
+%patch1005 -p1
+%patch1006 -p1
+%patch1008 -p1
 
 sed -e 's#/usr/local#%{_prefix}#g' -i doc/texi2html
 libtoolize --copy --force
@@ -102,10 +107,10 @@ libtoolize --copy --force
     --with-curses \
     --enable-multibyte
 
-%make
+%make_build
 
 %install
-%makeinstall_std
+%make_install
 # put all libs in /lib because some package needs it
 # before /usr is mounted
 install -d %{buildroot}/%{_lib}
