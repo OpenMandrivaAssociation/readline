@@ -1,32 +1,37 @@
-%define major 7
+%define major 8
 %define libname %mklibname %{name} %{major}
 %define libhist %mklibname history %{major}
+# Unfortunately, readline uses version numbers as sonames,
+# even if the ABI remains stable...
+%define libname6 %mklibname %{name} 6
+%define libhist6 %mklibname history 6
+%define libname7 %mklibname %{name} 7
+%define libhist7 %mklibname history 7
 %define devname %mklibname %{name} -d
-%define patchlevel 3
-%define pre %nil
+%define patchlevel %nil
+%define pre alpha
 
 Summary:	Library for reading lines from a terminal
 Name:		readline
-Version:	7.0
+Version:	8.0
 %if "%{pre}" != ""
-Release:	0.%{pre}.5
+Release:	0.%{pre}.1
 Source0:	ftp://ftp.cwru.edu/pub/bash/%{name}-%{version}-%{pre}.tar.gz
 %else
-Release:	4
+Release:	1
 Source0:	ftp://ftp.gnu.org/gnu/readline/%{name}-%{version}.tar.gz
 %endif
 License:	GPLv2+
 Group:		System/Libraries
 Url:		http://tiswww.case.edu/php/chet/readline/rltop.html
 # Upstream patches
-%if %{patchlevel}
+%if 0%{patchlevel}
 %(for i in `seq 1 %{patchlevel}`; do echo Patch$i: ftp://ftp.gnu.org/pub/gnu/readline/readline-%{version}-patches/readline`echo %{version} |sed -e 's,\\.,,g'`-`echo 000$i |rev |cut -b1-3 |rev`; done)
 %endif
 Patch1000:	readline-4.3-no_rpath.patch
 Patch1003:	readline-4.1-outdated.patch
 Patch1004:	rl-header.patch
 Patch1005:	rl-attribute.patch
-Patch1006:	readline-6.0-fix-shared-libs-perms.patch
 Patch1008:	readline-6.2-fix-missing-linkage.patch
 BuildRequires:	ncurses-devel
 
@@ -42,6 +47,17 @@ Group:		System/Libraries
 Provides:	%{name} = %{EVRD}
 Conflicts:	%{_lib}history < 6.2-13
 Obsoletes:	%{_lib}history < 6.2-13
+%rename %{libname6}
+%rename %{libname7}
+%if "%{_lib}" == "lib64"
+Provides:	libreadline.so.6()(64bit)
+Provides:	libreadline.so.7()(64bit)
+%else
+Provides:	libreadline.so.6
+Provides:	libreadline.so.7
+%endif
+Provides:	libreadline.so.6%{?_isa}
+Provides:	libreadline.so.7%{?_isa}
 
 %description -n %{libname}
 This package contains the library needed to run programs dynamically
@@ -52,6 +68,17 @@ Summary:	Shared libhistory library for readline
 Group:		System/Libraries
 Conflicts:	%{_lib}readline6 < 6.2-13
 Obsoletes:	%{_lib}readline6 < 6.2-13
+%rename %{libhist6}
+%rename %{libhist7}
+%if "%{_lib}" == "lib64"
+Provides:	libhistory.so.6()(64bit)
+Provides:	libhistory.so.7()(64bit)
+%else
+Provides:	libhistory.so.6
+Provides:	libhistory.so.7
+%endif
+Provides:	libreadline.so.6%{?_isa}
+Provides:	libreadline.so.7%{?_isa}
 
 %description -n %{libhist}
 This package contains the libhistory library from readline.
@@ -87,7 +114,7 @@ text of the line remains.
 %setup -q
 %endif
 # Upstream patches
-%if %{patchlevel}
+%if 0%{patchlevel}
 %(for i in `seq 1 %{patchlevel}`; do echo %%patch$i -p0; done)
 %endif
 
@@ -95,8 +122,9 @@ text of the line remains.
 %patch1003 -p1
 %patch1004 -p1
 %patch1005 -p1
-%patch1006 -p1
 %patch1008 -p1
+
+find . -name "*.orig" |xargs rm
 
 sed -e 's#/usr/local#%{_prefix}#g' -i doc/texi2html
 libtoolize --copy --force
@@ -110,6 +138,7 @@ libtoolize --copy --force
 %make_build
 
 %install
+mkdir -p %{buildroot}%{_libdir}/pkgconfig
 %make_install
 # put all libs in /lib because some package needs it
 # before /usr is mounted
@@ -118,15 +147,23 @@ for l in libhistory.so libreadline.so; do
 	rm %{buildroot}%{_libdir}/${l}
 	mv %{buildroot}%{_libdir}/${l}.%{major}* %{buildroot}/%{_lib}
 	ln -sr %{buildroot}/%{_lib}/${l}.%{major}.* %{buildroot}%{_libdir}/${l}
+	# Unfortunately, readline uses version numbers as sonames,
+	# even if the ABI remains stable...
+	ln -s ${l}.%{major} %{buildroot}/%{_lib}/${l}.6
+	ln -s ${l}.%{major} %{buildroot}/%{_lib}/${l}.7
 done
 
 rm -rf %{buildroot}%{_docdir}/readline/{CHANGES,INSTALL,README}
 
 %files -n %{libhist}
 /%{_lib}/libhistory.so.%{major}*
+/%{_lib}/libhistory.so.7
+/%{_lib}/libhistory.so.6
 
 %files -n %{libname}
 /%{_lib}/libreadline.so.%{major}*
+/%{_lib}/libreadline.so.7
+/%{_lib}/libreadline.so.6
 
 %files doc
 %{_infodir}/history.info*
@@ -140,3 +177,4 @@ rm -rf %{buildroot}%{_docdir}/readline/{CHANGES,INSTALL,README}
 %{_includedir}/readline
 %{_libdir}/libhistory.so
 %{_libdir}/libreadline.so
+%{_libdir}/pkgconfig/readline.pc
