@@ -9,7 +9,7 @@
 %define libhist7 %mklibname history 7
 %define devname %mklibname %{name} -d
 %define patchlevel %nil
-%define pre beta2
+%define pre %{nil}
 
 Summary:	Library for reading lines from a terminal
 Name:		readline
