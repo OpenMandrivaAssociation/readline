@@ -8,7 +8,7 @@
 %define libname7 %mklibname %{name} 7
 %define libhist7 %mklibname history 7
 %define devname %mklibname %{name} -d
-%define patchlevel %nil
+%define patchlevel 1
 %define pre %{nil}
 
 Summary:	Library for reading lines from a terminal
@@ -18,7 +18,7 @@ Version:	8.0
 Release:	0.%{pre}.1
 Source0:	ftp://ftp.cwru.edu/pub/bash/%{name}-%{version}-%{pre}.tar.gz
 %else
-Release:	1
+Release:	2
 Source0:	ftp://ftp.gnu.org/gnu/readline/%{name}-%{version}.tar.gz
 %endif
 License:	GPLv2+
@@ -26,7 +26,7 @@ Group:		System/Libraries
 Url:		http://tiswww.case.edu/php/chet/readline/rltop.html
 # Upstream patches
 %if 0%{patchlevel}
-%(for i in `seq 1 %{patchlevel}`; do echo Patch$i: ftp://ftp.gnu.org/pub/gnu/readline/readline-%{version}-patches/readline`echo %{version} |sed -e 's,\\.,,g'`-`echo 000$i |rev |cut -b1-3 |rev`; done)
+%(for i in $(seq 1 %{patchlevel}); do echo Patch$i: ftp://ftp.gnu.org/pub/gnu/readline/readline-%{version}-patches/readline$(echo %{version} |sed -e 's,\\.,,g')-$(echo 000$i |rev |cut -b1-3 |rev); done)
 %endif
 Patch1000:	readline-4.3-no_rpath.patch
 Patch1003:	readline-4.1-outdated.patch
