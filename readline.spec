@@ -11,6 +11,8 @@
 %define patchlevel 1
 %define pre %{nil}
 
+%global optflags %{optflags} -Oz
+
 Summary:	Library for reading lines from a terminal
 Name:		readline
 Version:	8.0
@@ -18,7 +20,7 @@ Version:	8.0
 Release:	0.%{pre}.1
 Source0:	ftp://ftp.cwru.edu/pub/bash/%{name}-%{version}-%{pre}.tar.gz
 %else
-Release:	2
+Release:	3
 Source0:	ftp://ftp.gnu.org/gnu/readline/%{name}-%{version}.tar.gz
 %endif
 License:	GPLv2+
@@ -141,7 +143,7 @@ libtoolize --copy --force
 mkdir -p %{buildroot}%{_libdir}/pkgconfig
 %make_install
 if [ -e %{buildroot}%{_includedir}/readline/rlmbutil.h ]; then
-	echo "rlmbutil.h is installed now -- please remove the workaround from the spec"
+	printf '%ss\n' "rlmbutil.h is installed now -- please remove the workaround from the spec"
 	exit 1
 else
 	cp rlmbutil.h %{buildroot}%{_includedir}/readline/
