@@ -1,3 +1,8 @@
+# Readline is used by various wine dependencies
+%ifarch %{x86_64}
+%bcond_without compat32
+%endif
+
 %define major 8
 %define libname %mklibname %{name} %{major}
 %define libhist %mklibname history %{major}
@@ -8,6 +13,13 @@
 %define libname7 %mklibname %{name} 7
 %define libhist7 %mklibname history 7
 %define devname %mklibname %{name} -d
+%define lib32name %mklib32name %{name} %{major}
+%define lib32hist %mklib32name history %{major}
+%define lib32name6 %mklib32name %{name} 6
+%define lib32hist6 %mklib32name history 6
+%define lib32name7 %mklib32name %{name} 7
+%define lib32hist7 %mklib32name history 7
+%define dev32name %mklib32name %{name} -d
 %define patchlevel 1
 %define pre %{nil}
 
@@ -20,7 +32,7 @@ Version:	8.0
 Release:	0.%{pre}.1
 Source0:	ftp://ftp.cwru.edu/pub/bash/%{name}-%{version}-%{pre}.tar.gz
 %else
-Release:	3
+Release:	4
 Source0:	ftp://ftp.gnu.org/gnu/readline/%{name}-%{version}.tar.gz
 %endif
 License:	GPLv2+
@@ -36,6 +48,9 @@ Patch1004:	rl-header.patch
 Patch1005:	rl-attribute.patch
 Patch1008:	readline-6.2-fix-missing-linkage.patch
 BuildRequires:	ncurses-devel
+%if %{with compat32}
+BuildRequires:	devel(libncursesw)
+%endif
 
 %description
 The "readline" library will read a line from the terminal and return it,
@@ -109,6 +124,45 @@ line returned is allocated with malloc(3), so the caller must free it when
 finished.  The line returned has the final newline removed, so only the
 text of the line remains.
 
+%if %{with compat32}
+%package -n %{lib32name}
+Summary:	Shared libreadline library for readline (32-bit)
+Group:		System/Libraries
+%rename %{lib32name6}
+%rename %{lib32name7}
+Provides:	libreadline.so.6
+Provides:	libreadline.so.7
+
+%description -n %{lib32name}
+This package contains the library needed to run programs dynamically
+linked to readline.
+
+%package -n %{lib32hist}
+Summary:	Shared libhistory library for readline (32-bit)
+Group:		System/Libraries
+%rename %{lib32hist6}
+%rename %{lib32hist7}
+Provides:	libhistory.so.6
+Provides:	libhistory.so.7
+
+%description -n %{lib32hist}
+This package contains the libhistory library from readline.
+
+%package -n %{dev32name}
+Summary:	Files for developing programs that use the readline library (32-bit)
+Group:		Development/C
+Requires:	%{devname} = %{EVRD}
+Requires:	%{lib32name} = %{EVRD}
+Requires:	%{lib32hist} = %{EVRD}
+
+%description -n %{dev32name}
+The "readline" library will read a line from the terminal and return it,
+using prompt as a prompt.  If prompt is null, no prompt is issued.  The
+line returned is allocated with malloc(3), so the caller must free it when
+finished.  The line returned has the final newline removed, so only the
+text of the line remains.
+%endif
+
 %prep
 %if "%{pre}" != ""
 %setup -qn %{name}-%{version}-%{pre}
@@ -131,17 +185,39 @@ find . -name "*.orig" |xargs rm
 sed -e 's#/usr/local#%{_prefix}#g' -i doc/texi2html
 libtoolize --copy --force
 
-%build
+export CONFIGURE_TOP="$(pwd)"
+
+%if %{with compat32}
+mkdir build32
+cd build32
+%configure32 \
+    --enable-static=no \
+    --with-curses \
+    --enable-multibyte
+cd ..
+%endif
+
+mkdir build
+cd build
 %configure \
     --enable-static=no \
     --with-curses \
     --enable-multibyte
 
-%make_build
+
+%build
+%if %{with compat32}
+%make_build -C build32
+%endif
+%make_build -C build
 
 %install
 mkdir -p %{buildroot}%{_libdir}/pkgconfig
-%make_install
+%if %{with compat32}
+mkdir -p %{buildroot}%{_prefix}/lib/pkgconfig
+%make_install -C build32
+%endif
+%make_install -C build
 if [ -e %{buildroot}%{_includedir}/readline/rlmbutil.h ]; then
 	printf '%ss\n' "rlmbutil.h is installed now -- please remove the workaround from the spec"
 	exit 1
@@ -160,6 +236,10 @@ for l in libhistory.so libreadline.so; do
 	# even if the ABI remains stable...
 	ln -s ${l}.%{major} %{buildroot}/%{_lib}/${l}.6
 	ln -s ${l}.%{major} %{buildroot}/%{_lib}/${l}.7
+%if %{with compat32}
+	ln -s ${l}.%{major} %{buildroot}%{_prefix}/lib/${l}.6
+	ln -s ${l}.%{major} %{buildroot}%{_prefix}/lib/${l}.7
+%endif
 done
 
 rm -rf %{buildroot}%{_docdir}/readline/{CHANGES,INSTALL,README}
@@ -187,3 +267,20 @@ rm -rf %{buildroot}%{_docdir}/readline/{CHANGES,INSTALL,README}
 %{_libdir}/libhistory.so
 %{_libdir}/libreadline.so
 %{_libdir}/pkgconfig/readline.pc
+
+%if %{with compat32}
+%files -n %{lib32hist}
+%{_prefix}/lib/libhistory.so.%{major}*
+%{_prefix}/lib/libhistory.so.7
+%{_prefix}/lib/libhistory.so.6
+
+%files -n %{lib32name}
+%{_prefix}/lib/libreadline.so.%{major}*
+%{_prefix}/lib/libreadline.so.7
+%{_prefix}/lib/libreadline.so.6
+
+%files -n %{dev32name}
+%{_prefix}/lib/libhistory.so
+%{_prefix}/lib/libreadline.so
+%{_prefix}/lib/pkgconfig/readline.pc
+%endif
