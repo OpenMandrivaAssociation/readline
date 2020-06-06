@@ -49,7 +49,7 @@ Patch1005:	rl-attribute.patch
 Patch1008:	readline-6.2-fix-missing-linkage.patch
 BuildRequires:	ncurses-devel
 %if %{with compat32}
-BuildRequires:	devel(libncursesw)
+BuildRequires:	devel(libncurses)
 %endif
 
 %description
