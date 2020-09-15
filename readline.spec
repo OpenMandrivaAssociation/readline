@@ -40,7 +40,7 @@ Group:		System/Libraries
 Url:		http://tiswww.case.edu/php/chet/readline/rltop.html
 # Upstream patches
 %if 0%{patchlevel}
-%(for i in $(seq 1 %{patchlevel}); do echo Patch$i: ftp://ftp.gnu.org/pub/gnu/readline/readline-%{version}-patches/readline$(echo %{version} |sed -e 's,\.,0,g')-$(echo 000$i |rev |cut -b1-3 |rev); done)
+%(for i in $(seq 1 %{patchlevel}); do echo Patch$i: ftp://ftp.gnu.org/pub/gnu/readline/readline-%{version}-patches/readline$(echo %{version} |sed -e 's,\.,,g')-$(echo 000$i |rev |cut -b1-3 |rev); done)
 %endif
 Patch1000:	readline-4.3-no_rpath.patch
 Patch1003:	readline-4.1-outdated.patch
