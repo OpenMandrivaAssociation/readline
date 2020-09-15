@@ -20,7 +20,7 @@
 %define lib32name7 %mklib32name %{name} 7
 %define lib32hist7 %mklib32name history 7
 %define dev32name %mklib32name %{name} -d
-%define patchlevel 1
+%define patchlevel 4
 %define pre %{nil}
 
 %global optflags %{optflags} -Oz
@@ -32,7 +32,7 @@ Version:	8.0
 Release:	0.%{pre}.1
 Source0:	ftp://ftp.cwru.edu/pub/bash/%{name}-%{version}-%{pre}.tar.gz
 %else
-Release:	4
+Release:	5
 Source0:	ftp://ftp.gnu.org/gnu/readline/%{name}-%{version}.tar.gz
 %endif
 License:	GPLv2+
@@ -64,8 +64,8 @@ Group:		System/Libraries
 Provides:	%{name} = %{EVRD}
 Conflicts:	%{_lib}history < 6.2-13
 Obsoletes:	%{_lib}history < 6.2-13
-%rename %{libname6}
-%rename %{libname7}
+%rename		%{libname6}
+%rename		%{libname7}
 %if "%{_lib}" == "lib64"
 Provides:	libreadline.so.6()(64bit)
 Provides:	libreadline.so.7()(64bit)
@@ -85,8 +85,8 @@ Summary:	Shared libhistory library for readline
 Group:		System/Libraries
 Conflicts:	%{_lib}readline6 < 6.2-13
 Obsoletes:	%{_lib}readline6 < 6.2-13
-%rename %{libhist6}
-%rename %{libhist7}
+%rename		%{libhist6}
+%rename		%{libhist7}
 %if "%{_lib}" == "lib64"
 Provides:	libhistory.so.6()(64bit)
 Provides:	libhistory.so.7()(64bit)
@@ -128,8 +128,8 @@ text of the line remains.
 %package -n %{lib32name}
 Summary:	Shared libreadline library for readline (32-bit)
 Group:		System/Libraries
-%rename %{lib32name6}
-%rename %{lib32name7}
+%rename		%{lib32name6}
+%rename		%{lib32name7}
 Provides:	libreadline.so.6
 Provides:	libreadline.so.7
 
@@ -140,8 +140,8 @@ linked to readline.
 %package -n %{lib32hist}
 Summary:	Shared libhistory library for readline (32-bit)
 Group:		System/Libraries
-%rename %{lib32hist6}
-%rename %{lib32hist7}
+%rename		%{lib32hist6}
+%rename		%{lib32hist7}
 Provides:	libhistory.so.6
 Provides:	libhistory.so.7
 
@@ -204,7 +204,6 @@ cd build
     --with-curses \
     --enable-multibyte
 
-
 %build
 %if %{with compat32}
 %make_build -C build32
@@ -219,26 +218,26 @@ mkdir -p %{buildroot}%{_prefix}/lib/pkgconfig
 %endif
 %make_install -C build
 if [ -e %{buildroot}%{_includedir}/readline/rlmbutil.h ]; then
-	printf '%ss\n' "rlmbutil.h is installed now -- please remove the workaround from the spec"
-	exit 1
+    printf '%ss\n' "rlmbutil.h is installed now -- please remove the workaround from the spec"
+    exit 1
 else
-	cp rlmbutil.h %{buildroot}%{_includedir}/readline/
+    cp rlmbutil.h %{buildroot}%{_includedir}/readline/
 fi
 
 # put all libs in /lib because some package needs it
 # before /usr is mounted
 install -d %{buildroot}/%{_lib}
 for l in libhistory.so libreadline.so; do
-	rm %{buildroot}%{_libdir}/${l}
-	mv %{buildroot}%{_libdir}/${l}.%{major}* %{buildroot}/%{_lib}
-	ln -sr %{buildroot}/%{_lib}/${l}.%{major}.* %{buildroot}%{_libdir}/${l}
-	# Unfortunately, readline uses version numbers as sonames,
-	# even if the ABI remains stable...
-	ln -s ${l}.%{major} %{buildroot}/%{_lib}/${l}.6
-	ln -s ${l}.%{major} %{buildroot}/%{_lib}/${l}.7
+    rm %{buildroot}%{_libdir}/${l}
+    mv %{buildroot}%{_libdir}/${l}.%{major}* %{buildroot}/%{_lib}
+    ln -sr %{buildroot}/%{_lib}/${l}.%{major}.* %{buildroot}%{_libdir}/${l}
+# Unfortunately, readline uses version numbers as sonames,
+# even if the ABI remains stable...
+    ln -s ${l}.%{major} %{buildroot}/%{_lib}/${l}.6
+    ln -s ${l}.%{major} %{buildroot}/%{_lib}/${l}.7
 %if %{with compat32}
-	ln -s ${l}.%{major} %{buildroot}%{_prefix}/lib/${l}.6
-	ln -s ${l}.%{major} %{buildroot}%{_prefix}/lib/${l}.7
+    ln -s ${l}.%{major} %{buildroot}%{_prefix}/lib/${l}.6
+    ln -s ${l}.%{major} %{buildroot}%{_prefix}/lib/${l}.7
 %endif
 done
 
