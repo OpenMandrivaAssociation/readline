@@ -25,7 +25,7 @@ index 7920f1b..e7520cb 100644
 -	SHLIB_XLDFLAGS='-Wl,-rpath,$(libdir) -Wl,-soname,`basename $@ $(SHLIB_MINOR)`'
 +	SHLIB_XLDFLAGS='-Wl,-soname,`basename $@ $(SHLIB_MINOR)`'
  	SHLIB_LIBVERSION='$(SHLIB_LIBSUFF).$(SHLIB_MAJOR)$(SHLIB_MINOR)'
-+	SHLIB_LIBS='$(TERMCAP_LIB)'
++	SHLIB_LIBS='-ltinfo'
  	;;
  
  freebsd2*)

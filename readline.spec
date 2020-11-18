@@ -47,11 +47,9 @@ Patch1003:	readline-4.1-outdated.patch
 Patch1004:	rl-header.patch
 Patch1005:	rl-attribute.patch
 Patch1008:	readline-6.2-fix-missing-linkage.patch
-%if 0
 BuildRequires:	ncurses-devel
 %if %{with compat32}
 BuildRequires:	devel(libncurses)
-%endif
 %endif
 
 %description
