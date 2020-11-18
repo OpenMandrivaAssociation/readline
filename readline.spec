@@ -32,7 +32,7 @@ Version:	8.0
 Release:	0.%{pre}.1
 Source0:	ftp://ftp.cwru.edu/pub/bash/%{name}-%{version}-%{pre}.tar.gz
 %else
-Release:	5
+Release:	6
 Source0:	ftp://ftp.gnu.org/gnu/readline/%{name}-%{version}.tar.gz
 %endif
 License:	GPLv2+
@@ -42,14 +42,16 @@ Url:		http://tiswww.case.edu/php/chet/readline/rltop.html
 %if 0%{patchlevel}
 %(for i in $(seq 1 %{patchlevel}); do echo Patch$i: ftp://ftp.gnu.org/pub/gnu/readline/readline-%{version}-patches/readline$(echo %{version} |sed -e 's,\.,,g')-$(echo 000$i |rev |cut -b1-3 |rev); done)
 %endif
-Patch1000:	readline-4.3-no_rpath.patch
+Patch1000:	https://src.fedoraproject.org/rpms/readline/raw/master/f/readline-8.0-shlib.patch
 Patch1003:	readline-4.1-outdated.patch
 Patch1004:	rl-header.patch
 Patch1005:	rl-attribute.patch
 Patch1008:	readline-6.2-fix-missing-linkage.patch
+%if 0
 BuildRequires:	ncurses-devel
 %if %{with compat32}
 BuildRequires:	devel(libncurses)
+%endif
 %endif
 
 %description
