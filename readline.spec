@@ -20,19 +20,19 @@
 %define lib32name7 %mklib32name %{name} 7
 %define lib32hist7 %mklib32name history 7
 %define dev32name %mklib32name %{name} -d
-%define patchlevel 4
+%define patchlevel 0
 %define pre %{nil}
 
 %global optflags %{optflags} -Oz
 
 Summary:	Library for reading lines from a terminal
 Name:		readline
-Version:	8.0
+Version:	8.1
 %if "%{pre}" != ""
 Release:	0.%{pre}.1
 Source0:	ftp://ftp.cwru.edu/pub/bash/%{name}-%{version}-%{pre}.tar.gz
 %else
-Release:	6
+Release:	1
 Source0:	ftp://ftp.gnu.org/gnu/readline/%{name}-%{version}.tar.gz
 %endif
 License:	GPLv2+
@@ -45,7 +45,6 @@ Url:		http://tiswww.case.edu/php/chet/readline/rltop.html
 Patch1000:	https://src.fedoraproject.org/rpms/readline/raw/master/f/readline-8.0-shlib.patch
 Patch1003:	readline-4.1-outdated.patch
 Patch1004:	rl-header.patch
-Patch1005:	rl-attribute.patch
 Patch1008:	readline-6.2-fix-missing-linkage.patch
 BuildRequires:	ncurses-devel
 %if %{with compat32}
@@ -174,13 +173,12 @@ text of the line remains.
 %(for i in `seq 1 %{patchlevel}`; do echo %%patch$i -p0; done)
 %endif
 
-%patch1000 -p1
-%patch1003 -p1
-%patch1004 -p1
-%patch1005 -p1
-%patch1008 -p1
+%patch1000 -p1 -b .p1000~
+%patch1003 -p1 -b .p1003~
+%patch1004 -p1 -b .p1004~
+%patch1008 -p1 -b .p1008~
 
-find . -name "*.orig" |xargs rm
+find . -name "*.*~" |xargs rm
 
 sed -e 's#/usr/local#%{_prefix}#g' -i doc/texi2html
 libtoolize --copy --force

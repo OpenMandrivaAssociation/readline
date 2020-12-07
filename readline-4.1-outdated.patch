@@ -1,8 +1,9 @@
---- readline-4.1/doc/readline.3.outdated	Tue Jan 30 15:48:32 2001
-+++ readline-4.1/doc/readline.3	Tue Jan 30 15:51:52 2001
-@@ -1203,3 +1204,7 @@
+diff -up readline-8.1/doc/readline.3.p1003~ readline-8.1/doc/readline.3
+--- readline-8.1/doc/readline.3.p1003~	2020-12-07 22:17:12.568555920 +0100
++++ readline-8.1/doc/readline.3	2020-12-07 22:17:54.292138873 +0100
+@@ -1542,3 +1542,7 @@ this manual page should be directed to
+ .IR chet.ramey@case.edu .
  .SH BUGS
- .PP
  It's too big and too slow.
 +.PP
 +The info file is much more up-to-date.  This man page conflicts with it in
