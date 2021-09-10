@@ -259,7 +259,7 @@ rm -rf %{buildroot}%{_docdir}/readline/{CHANGES,INSTALL,README}
 %files -n %{devname}
 %doc MANIFEST README USAGE
 %doc doc examples support
-%{_mandir}/man3/*
+%doc %{_mandir}/man3/*
 %{_includedir}/readline
 %{_libdir}/libhistory.so
 %{_libdir}/libreadline.so
