@@ -20,19 +20,19 @@
 %define lib32name7 %mklib32name %{name} 7
 %define lib32hist7 %mklib32name history 7
 %define dev32name %mklib32name %{name} -d
-%define patchlevel 1
+%define patchlevel 0
 %define pre %{nil}
 
 %global optflags %{optflags} -Oz
 
 Summary:	Library for reading lines from a terminal
 Name:		readline
-Version:	8.1
+Version:	8.1.2
 %if "%{pre}" != ""
 Release:	0.%{pre}.1
 Source0:	ftp://ftp.cwru.edu/pub/bash/%{name}-%{version}-%{pre}.tar.gz
 %else
-Release:	2
+Release:	1
 Source0:	ftp://ftp.gnu.org/gnu/readline/%{name}-%{version}.tar.gz
 %endif
 License:	GPLv2+
