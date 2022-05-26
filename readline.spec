@@ -32,7 +32,7 @@ Version:	8.1.2
 Release:	0.%{pre}.1
 Source0:	ftp://ftp.cwru.edu/pub/bash/%{name}-%{version}-%{pre}.tar.gz
 %else
-Release:	1
+Release:	2
 Source0:	ftp://ftp.gnu.org/gnu/readline/%{name}-%{version}.tar.gz
 %endif
 License:	GPLv2+
@@ -222,17 +222,14 @@ else
     cp rlmbutil.h %{buildroot}%{_includedir}/readline/
 fi
 
+
 # put all libs in /lib because some package needs it
 # before /usr is mounted
-install -d %{buildroot}/%{_lib}
 for l in libhistory.so libreadline.so; do
-    rm %{buildroot}%{_libdir}/${l}
-    mv %{buildroot}%{_libdir}/${l}.%{major}* %{buildroot}/%{_lib}
-    ln -sr %{buildroot}/%{_lib}/${l}.%{major}.* %{buildroot}%{_libdir}/${l}
 # Unfortunately, readline uses version numbers as sonames,
 # even if the ABI remains stable...
-    ln -s ${l}.%{major} %{buildroot}/%{_lib}/${l}.6
-    ln -s ${l}.%{major} %{buildroot}/%{_lib}/${l}.7
+    ln -s ${l}.%{major} %{buildroot}%{_libdir}/${l}.6
+    ln -s ${l}.%{major} %{buildroot}%{_libdir}/${l}.7
 %if %{with compat32}
     ln -s ${l}.%{major} %{buildroot}%{_prefix}/lib/${l}.6
     ln -s ${l}.%{major} %{buildroot}%{_prefix}/lib/${l}.7
@@ -242,14 +239,14 @@ done
 rm -rf %{buildroot}%{_docdir}/readline/{CHANGES,INSTALL,README}
 
 %files -n %{libhist}
-/%{_lib}/libhistory.so.%{major}*
-/%{_lib}/libhistory.so.7
-/%{_lib}/libhistory.so.6
+%{_libdir}/libhistory.so.%{major}*
+%{_libdir}/libhistory.so.7
+%{_libdir}/libhistory.so.6
 
 %files -n %{libname}
-/%{_lib}/libreadline.so.%{major}*
-/%{_lib}/libreadline.so.7
-/%{_lib}/libreadline.so.6
+%{_libdir}/libreadline.so.%{major}*
+%{_libdir}/libreadline.so.7
+%{_libdir}/libreadline.so.6
 
 %files doc
 %{_infodir}/history.info*
