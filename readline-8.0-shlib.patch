@@ -1,6 +1,6 @@
-diff -up readline-8.1/shlib/Makefile.in.p1000~ readline-8.1/shlib/Makefile.in
---- readline-8.1/shlib/Makefile.in.p1000~	2020-10-29 20:47:57.000000000 +0100
-+++ readline-8.1/shlib/Makefile.in	2020-12-07 22:13:50.306727948 +0100
+diff -up readline-8.2-rc1/shlib/Makefile.in.p1000~ readline-8.2-rc1/shlib/Makefile.in
+--- readline-8.2-rc1/shlib/Makefile.in.p1000~	2020-10-29 20:47:57.000000000 +0100
++++ readline-8.2-rc1/shlib/Makefile.in	2022-06-19 03:05:36.596367154 +0200
 @@ -178,7 +178,7 @@ $(SHARED_READLINE):	$(SHARED_OBJ)
  
  $(SHARED_HISTORY):	$(SHARED_HISTOBJ) xmalloc.so xfree.so
@@ -10,15 +10,15 @@ diff -up readline-8.1/shlib/Makefile.in.p1000~ readline-8.1/shlib/Makefile.in
  
  # Since tilde.c is shared between readline and bash, make sure we compile 
  # it with the right flags when it's built as part of readline
-diff -up readline-8.1/support/shobj-conf.p1000~ readline-8.1/support/shobj-conf
---- readline-8.1/support/shobj-conf.p1000~	2020-12-07 22:13:50.306727948 +0100
-+++ readline-8.1/support/shobj-conf	2020-12-07 22:16:40.803112015 +0100
+diff -up readline-8.2-rc1/support/shobj-conf.p1000~ readline-8.2-rc1/support/shobj-conf
+--- readline-8.2-rc1/support/shobj-conf.p1000~	2022-06-19 03:05:36.597367160 +0200
++++ readline-8.2-rc1/support/shobj-conf	2022-06-19 03:09:10.225652127 +0200
 @@ -126,10 +126,11 @@ sunos5*|solaris2*)
- linux*-*|gnu*-*|k*bsd*-gnu-*|freebsd*|dragonfly*)
+ linux*-*|gnu*-*|k*bsd*-gnu-*|midnightbsd*|freebsd*|dragonfly*)
  	SHOBJ_CFLAGS=-fPIC
  	SHOBJ_LD='${CC}'
 -	SHOBJ_LDFLAGS='-shared -Wl,-soname,$@'
-+	SHOBJ_LDFLAGS='$(CFLAGS) -shared -Wl,-soname,$@'
++	SHOBJ_LDFLAGS='$(CFLAGS) ${SHOBJ_CFLAGS} -shared -Wl,-soname,$@'
  
 -	SHLIB_XLDFLAGS='-Wl,-rpath,$(libdir) -Wl,-soname,`basename $@ $(SHLIB_MINOR)`'
 +	SHLIB_XLDFLAGS='-Wl,-soname,`basename $@ $(SHLIB_MINOR)`'
