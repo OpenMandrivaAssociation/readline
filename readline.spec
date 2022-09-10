@@ -21,7 +21,7 @@
 %define lib32hist7 %mklib32name history 7
 %define dev32name %mklib32name %{name} -d
 %define patchlevel 0
-%define pre rc3
+%define pre rc4
 
 %global optflags %{optflags} -Oz
 
