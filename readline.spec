@@ -21,7 +21,7 @@
 %define lib32hist7 %mklib32name history 7
 %define dev32name %mklib32name %{name} -d
 %define patchlevel 0
-%define pre rc4
+%define pre %{nil}
 
 %global optflags %{optflags} -Oz
 
@@ -221,7 +221,6 @@ if [ -e %{buildroot}%{_includedir}/readline/rlmbutil.h ]; then
 else
     cp rlmbutil.h %{buildroot}%{_includedir}/readline/
 fi
-
 
 # put all libs in /lib because some package needs it
 # before /usr is mounted
