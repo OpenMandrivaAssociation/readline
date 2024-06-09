@@ -20,7 +20,7 @@
 %define lib32name7 %mklib32name %{name} 7
 %define lib32hist7 %mklib32name history 7
 %define dev32name %mklib32name %{name} -d
-%define patchlevel 1
+%define patchlevel 10
 %define pre %{nil}
 
 %global optflags %{optflags} -Oz
@@ -170,13 +170,10 @@ text of the line remains.
 %endif
 # Upstream patches
 %if 0%{patchlevel}
-%(for i in `seq 1 %{patchlevel}`; do echo %%patch$i -p0; done)
+%autopatch -p0 -M 999
 %endif
 
-%patch1000 -p1 -b .p1000~
-%patch1003 -p1 -b .p1003~
-%patch1004 -p1 -b .p1004~
-%patch1008 -p1 -b .p1008~
+%autopatch -p1 -m 1000
 
 find . -name "*.*~" |xargs rm
 
