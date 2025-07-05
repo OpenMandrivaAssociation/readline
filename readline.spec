@@ -27,7 +27,7 @@
 
 Summary:	Library for reading lines from a terminal
 Name:		readline
-Version:	8.2.13
+Version:	8.3
 %if "%{pre}" != ""
 Release:	0.%{pre}.1
 Source0:	ftp://ftp.cwru.edu/pub/bash/%{name}-%{version}-%{pre}.tar.gz
@@ -253,6 +253,7 @@ rm -rf %{buildroot}%{_docdir}/readline/{CHANGES,INSTALL,README}
 %doc MANIFEST README USAGE
 %doc doc examples support
 %doc %{_mandir}/man3/*
+%doc %{_docdir}/readline
 %{_includedir}/readline
 %{_libdir}/libhistory.so
 %{_libdir}/libreadline.so
