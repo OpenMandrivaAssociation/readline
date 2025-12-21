@@ -46,6 +46,11 @@ Patch1000:	https://src.fedoraproject.org/rpms/readline/raw/master/f/readline-8.0
 Patch1003:	readline-4.1-outdated.patch
 Patch1004:	rl-header.patch
 Patch1008:	readline-6.2-fix-missing-linkage.patch
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	libtool-base
+BuildRequires:	slibtool
+BuildRequires:	make
 BuildRequires:	ncurses-devel
 %if %{with compat32}
 BuildRequires:	devel(libncurses)
